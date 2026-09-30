@@ -79,6 +79,7 @@
 #include "spi.h"
 #include "dma.h"
 #include "gpio.h"
+#include "led.h"
 #include "tmr.h"
 #include "arm_math.h"
 
@@ -330,7 +331,8 @@ static inline accel_raw_sample_t decode_accel_sample(
 
 void  iim_spi_dma_callback (mxc_spi_req_t *request, int error)
 {
-    uint8_t completed_index;
+	//LED_On(0);
+	uint8_t completed_index;
     accel_raw_sample_t raw;
 
     float x_g;
@@ -411,6 +413,7 @@ void  iim_spi_dma_callback (mxc_spi_req_t *request, int error)
     * Timestamp immediately after the HAL has written the PWM configuration.
     */
     latency_measurement_pwm_updated();
+    //LED_Off(0);
     return;
 }
 

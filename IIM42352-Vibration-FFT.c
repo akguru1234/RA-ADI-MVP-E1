@@ -66,6 +66,7 @@
 #include "spi.h"
 #include "dma.h"
 #include "gpio.h"
+#include "led.h"
 #include "tmr.h"
 #include "arm_math.h"
 
@@ -196,7 +197,6 @@ static float g_power[FFT_UNIQUE_BINS];
 
 static float g_hann_sum;
 static float g_hann_power_sum;
-volatile uint32_t g_ring_sample_count;
 
 static int vibration_pwm_pin_init(void)
 {
@@ -300,7 +300,7 @@ bool sample_ring_push_from_isr(const accel_raw_sample_t *sample)
 {
     uint32_t write = g_ring_write;
     uint32_t next = (write + 1u) & SAMPLE_RING_MASK;
-
+   // LED_On(0);
     if (next == g_ring_read) {
         g_ring_overruns++;
         return false;
@@ -313,9 +313,8 @@ bool sample_ring_push_from_isr(const accel_raw_sample_t *sample)
      */
     __DMB();
     g_ring_write = next;
-#if 0
-    g_ring_sample_count++;
-#endif
+
+    //LED_Off(0);
     return true;
 }
 
@@ -338,11 +337,7 @@ static bool sample_ring_pop(accel_raw_sample_t *sample)
 	if (primask == 0u) {
 		__enable_irq();
 	}
-#if 0
-	if (g_ring_sample_count > 0) {
-		g_ring_sample_count--;
-	}
-#endif
+
 	return true;
 }
 

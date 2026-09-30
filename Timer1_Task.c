@@ -18,6 +18,7 @@
 #include "spi.h"
 #include "dma.h"
 #include "gpio.h"
+#include "led.h"
 #include "tmr.h"
 #include "arm_math.h"
 #include "uart.h"
@@ -44,6 +45,7 @@
  * -------------------------------------------------------------------------- */
 void ContinuousTimerHandler(void)
 {
+	LED_On(0);
 	int error;
 	bool int_status_val =1;
 	/*
@@ -80,6 +82,7 @@ void ContinuousTimerHandler(void)
 		}
 	}
 	//latency_measurement_pwm_updated();
+	LED_Off(0);
 return;
 }
 /* --------------------------------------------------------------------------

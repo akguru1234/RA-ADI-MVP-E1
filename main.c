@@ -79,8 +79,10 @@
 #include "spi.h"
 #include "dma.h"
 #include "gpio.h"
+#include "board.h"
 #include "tmr.h"
 #include "arm_math.h"
+#include "led.h"
 #include "uart.h"
 #include "IIM42352.h"
 #include "vibration_console.h"
@@ -92,7 +94,7 @@
 //select gpio for direct on/off control using LED_ON and LED_OFF macros
 const mxc_gpio_cfg_t led_pin[] = {
    // { MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
-    { MXC_GPIO0, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 }
+    { MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 }
 };
 
 
@@ -158,7 +160,7 @@ int main(void)
      * Give the board power rails, 25 MHz clock source, accelerometer,
      * and encoder interface time to settle.
      */
-    MXC_Delay(MXC_DELAY_MSEC(20));
+    MXC_Delay(MXC_DELAY_MSEC(50));
     /*
      * UART1A:
      *     RX = P0.28
@@ -259,9 +261,12 @@ int main(void)
     	/*
     	 * Nonblocking console command processing.
     	 */
+    	//MXC_Delay(MXC_DELAY_USEC(500));
+    	//LED_On(0);
+    	//LED_Toggle(0);//toggles GPIO0.12
     	vibration_service(); //read and fill ring buffers for FFT
     	vibration_console_service();//process console serial comms
-
+    	//LED_Off(0);
     }
 }
 
